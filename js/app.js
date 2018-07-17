@@ -1,7 +1,8 @@
 /*
  * Create a list that holds all of your cards
  */
-
+const cardList = document.querySelectorAll('.card');
+const cardOrder = Array.from(Array(16).keys());
 
 /*
  * Display the cards on the page
@@ -25,6 +26,17 @@ function shuffle(array) {
     return array;
 }
 
+// Apply order to each card element based off shuffled deck
+function initializeDeck() {
+    shuffle(cardOrder);
+
+    for (let i=0; 0 < cardList.length; i++) {
+        cardList[i].style.order = cardOrder[i];
+    }
+}
+
+//initialize deck on page start-up
+initializeDeck()
 
 /*
  * set up the event listener for a card. If a card is clicked:
