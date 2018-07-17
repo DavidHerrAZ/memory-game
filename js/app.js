@@ -2,7 +2,7 @@
  * Create a list that holds all of your cards
  */
 const cardList = document.querySelectorAll('.card');
-const cardOrder = Array.from(Array(16).keys());
+const cardOrder = Array.from(Array(cardList.length).keys());
 
 /*
  * Display the cards on the page
@@ -35,7 +35,7 @@ function initializeDeck() {
     }
 }
 
-//initialize deck on page start-up
+// Initialize deck on page start-up
 initializeDeck()
 
 /*
