@@ -5,6 +5,13 @@ const cardList = document.querySelectorAll('.card');
 const cardOrder = Array.from(Array(cardList.length).keys());
 
 /*
+ * Declare card deck variable for later use in card event listeners
+ * Variable must be declared at top of block
+ * Otherwise, console says the variable is anonymous at call time
+ */
+const cardDeck = document.querySelector('.deck');
+
+/*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
@@ -41,6 +48,23 @@ function initializeStars() {
         starRating[i].style.visibility = "visible";
     }
 }
+
+function toggleCard(clickevent) {
+    if (clickevent.target.classList.contains('card')) {
+        const cardClicked = clickevent.target;
+        // toggling open only shows the other side of the card
+        cardClicked.classList.toggle('open');
+        // toggling show actually shows the symbol
+        cardClicked.classList.toggle('show');
+    };
+}
+
+/* 
+*  For efficiency the event listener will be added to '.deck'
+*  Functions for interactions with cards will use click targets
+*  Event listener must be before function calls to work...?
+*/ 
+cardDeck.addEventListener('click', toggleCard);
 
 // Initialize game when the page loads
 initializeDeck();
