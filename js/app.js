@@ -35,8 +35,16 @@ function initializeDeck() {
     }
 }
 
-// Initialize deck on page start-up
-initializeDeck()
+function initializeStars() {
+    const starRating = document.querySelectorAll('.stars li');
+    for (let i=0; 0 < starRating.length; i++) {
+        starRating[i].style.visibility = "visible";
+    }
+}
+
+// Initialize game when the page loads
+initializeDeck();
+initializeStars();
 
 /*
  * set up the event listener for a card. If a card is clicked:
