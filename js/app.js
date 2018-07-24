@@ -70,10 +70,12 @@ function checkCards(cardClicked) {
         cardsToCheck = [];
     }
     else if (cardsToCheck.length === 2 && (cardsToCheck[0].firstElementChild.classList.value != cardsToCheck[1].firstElementChild.classList.value)) {
-        for(const card of cardsToCheck) {
-            toggleCard(card);
-        }
-        cardsToCheck = [];
+        setTimeout(function misMatchedCards() {
+            for(const card of cardsToCheck) {
+                toggleCard(card);
+            }
+            cardsToCheck = [];
+        }, 1000);    
     }
 }
 
