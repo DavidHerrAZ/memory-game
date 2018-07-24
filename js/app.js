@@ -11,6 +11,9 @@ const cardOrder = Array.from(Array(cardList.length).keys());
  */
 const cardDeck = document.querySelector('.deck');
 
+let cardsToCheck = []
+let matchedCards = []
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -49,14 +52,29 @@ function initializeStars() {
     }
 }
 
-function toggleCard(clickevent) {
-    if (clickevent.target.classList.contains('card')) {
-        const cardClicked = clickevent.target;
-        // toggling open only shows the other side of the card
-        cardClicked.classList.toggle('open');
-        // toggling show actually shows the symbol
-        cardClicked.classList.toggle('show');
-    };
+function toggleCard(cardClicked) {
+    // toggling open only shows the other side of the card
+    cardClicked.classList.toggle('open');
+    // toggling show actually shows the symbol
+    cardClicked.classList.toggle('show');
+};
+
+function checkCards(cardClicked) {
+    cardsToCheck.unshift(cardClicked);
+
+    if (cardsToCheck.length === 2 && (cardsToCheck[0].firstElementChild.classList.value === cardsToCheck[1].firstElementChild.classList.value)) {
+        for(const card of cardsToCheck) {
+            card.classList.toggle('match');
+            matchedCards.push(card);
+        }
+        cardsToCheck = [];
+    }
+    else if (cardsToCheck.length > 2) {
+        cardsToCheck.splice(1,2);
+        for(const card of cardsToCheck) {
+            toggleCard(card);
+        }
+    }
 }
 
 /* 
@@ -64,7 +82,13 @@ function toggleCard(clickevent) {
 *  Functions for interactions with cards will use click targets
 *  Event listener must be before function calls to work...?
 */ 
-cardDeck.addEventListener('click', toggleCard);
+cardDeck.addEventListener('click', function(clickevent) {
+    const cardClicked = clickevent.target;
+    if (cardClicked.classList.contains('card')) {
+        toggleCard(cardClicked);
+        checkCards(cardClicked);
+    }
+});
 
 // Initialize game when the page loads
 initializeDeck();
