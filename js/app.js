@@ -69,11 +69,11 @@ function checkCards(cardClicked) {
         }
         cardsToCheck = [];
     }
-    else if (cardsToCheck.length > 2) {
-        cardsToCheck.splice(1,2);
+    else if (cardsToCheck.length === 2 && (cardsToCheck[0].firstElementChild.classList.value != cardsToCheck[1].firstElementChild.classList.value)) {
         for(const card of cardsToCheck) {
             toggleCard(card);
         }
+        cardsToCheck = [];
     }
 }
 
