@@ -1,18 +1,24 @@
 /*
- * Create a list that holds all of your cards
- */
-const cardList = document.querySelectorAll('.card');
-const cardOrder = Array.from(Array(cardList.length).keys());
-
-/*
  * Declare card deck variable for later use in card event listeners
  * Variable must be declared at top of block
  * Otherwise, console says the variable is anonymous at call time
  */
 const cardDeck = document.querySelector('.deck');
 
-let cardsToCheck = []
-let matchedCards = []
+/*
+ * List for cards needing validation after user interaction
+ * List for all matched cards to trigger game completion
+ */
+let cardsToCheck = [];
+let matchedCards = [];
+
+/*
+ * Global variables for managing the scoreboard
+ */
+const restartButton = document.querySelector('.restart');
+const starRating = document.querySelectorAll('.stars li');
+const moveText = document.querySelector('.moves');
+let userMoves = 0;
 
 /*
  * Display the cards on the page
@@ -36,22 +42,42 @@ function shuffle(array) {
     return array;
 }
 
+// Functions to start and/or restart game scoreboard
+function startOrResetGame() {
+    initializeMoves();
+    initializeStars();
+    // TODO: initializeTimer()
+    initializeDeck();
+}
+
+function initializeMoves() {
+    userMoves = 0;
+    moveText.textContent = userMoves;
+}
+
+function initializeStars() {
+    for (const star of starRating) {
+        star.style.visibility = "visible";
+    }
+}
+
+// TODO: initializeTimer()
+
 // Apply order to each card element based off shuffled deck
 function initializeDeck() {
+    const cardList = document.querySelectorAll('.card');
+    const cardOrder = Array.from(Array(cardList.length).keys());
+    
     shuffle(cardOrder);
 
     for (let i=0; 0 < cardList.length; i++) {
         cardList[i].style.order = cardOrder[i];
+        //When starting|resetting game, all card classes must reset to 'card'
+        cardList[i].className = "card";
     }
 }
 
-function initializeStars() {
-    const starRating = document.querySelectorAll('.stars li');
-    for (let i=0; 0 < starRating.length; i++) {
-        starRating[i].style.visibility = "visible";
-    }
-}
-
+// User card interaction functions for toggling and checking matches
 function toggleCard(cardClicked) {
     // toggling open only shows the other side of the card
     cardClicked.classList.toggle('open');
@@ -68,21 +94,29 @@ function checkCards(cardClicked) {
             matchedCards.push(card);
         }
         cardsToCheck = [];
+        updateMoves();
     }
     else if (cardsToCheck.length === 2 && (cardsToCheck[0].firstElementChild.classList.value != cardsToCheck[1].firstElementChild.classList.value)) {
+        // display both un-matched cards for __ seconds
+        // without delay, user only sees first card
         setTimeout(function misMatchedCards() {
             for(const card of cardsToCheck) {
                 toggleCard(card);
             }
             cardsToCheck = [];
+            updateMoves();
         }, 1000);    
     }
+}
+
+function updateMoves() {
+    userMoves++;
+    moveText.textContent = userMoves;
 }
 
 /* 
 *  For efficiency the event listener will be added to '.deck'
 *  Functions for interactions with cards will use click targets
-*  Event listener must be before function calls to work...?
 */ 
 cardDeck.addEventListener('click', function(clickevent) {
     const cardClicked = clickevent.target;
@@ -92,9 +126,10 @@ cardDeck.addEventListener('click', function(clickevent) {
     }
 });
 
+restartButton.addEventListener('click', startOrResetGame);
+
 // Initialize game when the page loads
-initializeDeck();
-initializeStars();
+startOrResetGame();
 
 /*
  * set up the event listener for a card. If a card is clicked:
