@@ -88,30 +88,45 @@ function toggleCard(cardClicked) {
 function checkCards(cardClicked) {
     cardsToCheck.unshift(cardClicked);
 
-    if (cardsToCheck.length === 2 && (cardsToCheck[0].firstElementChild.classList.value === cardsToCheck[1].firstElementChild.classList.value)) {
-        for(const card of cardsToCheck) {
-            card.classList.toggle('match');
-            matchedCards.push(card);
-        }
-        cardsToCheck = [];
-        updateMoves();
-    }
-    else if (cardsToCheck.length === 2 && (cardsToCheck[0].firstElementChild.classList.value != cardsToCheck[1].firstElementChild.classList.value)) {
-        // display both un-matched cards for __ seconds
-        // without delay, user only sees first card
-        setTimeout(function misMatchedCards() {
+    if (cardsToCheck.length === 2) {
+        if (cardsToCheck[0].firstElementChild.classList.value === cardsToCheck[1].firstElementChild.classList.value) {
             for(const card of cardsToCheck) {
-                toggleCard(card);
+                card.classList.toggle('match');
+                matchedCards.push(card);
             }
             cardsToCheck = [];
-            updateMoves();
-        }, 1000);    
+        }
+        else if (cardsToCheck[0].firstElementChild.classList.value != cardsToCheck[1].firstElementChild.classList.value) {
+            // display both un-matched cards for __ seconds
+            // without delay, user only sees first card
+            setTimeout(function misMatchedCards() {
+                for(const card of cardsToCheck) {
+                    toggleCard(card);
+                }
+                cardsToCheck = [];
+            }, 1000);
+        }
+        updateMoves();
+        checkStars();
     }
 }
 
+// Functions for managing scoreboard throughout game
 function updateMoves() {
     userMoves++;
     moveText.textContent = userMoves;
+}
+
+function checkStars() {
+    if (userMoves === 16 || userMoves === 24 || userMoves === 32) {
+        updateStars();
+    }
+}
+
+function updateStars() {
+    const currentStars = document.querySelectorAll('.stars li:not([style*="visibility: hidden"])');
+    const removeStar = currentStars.length - 1;
+    starRating[removeStar].style.visibility = "hidden";
 }
 
 /* 
