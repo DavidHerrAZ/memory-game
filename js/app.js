@@ -1,9 +1,10 @@
 /*
- * Declare card deck variable for later use in card event listeners
- * Variable must be declared at top of block
- * Otherwise, console says the variable is anonymous at call time
+ * Global variables for managing the game board
+ * Includes card list and order for shuffling
  */
 const cardDeck = document.querySelector('.deck');
+const cardList = document.querySelectorAll('.card');
+const cardOrder = Array.from(Array(cardList.length).keys());
 
 /*
  * List for cards needing validation after user interaction
@@ -65,9 +66,6 @@ function initializeStars() {
 
 // Apply order to each card element based off shuffled deck
 function initializeDeck() {
-    const cardList = document.querySelectorAll('.card');
-    const cardOrder = Array.from(Array(cardList.length).keys());
-    
     shuffle(cardOrder);
 
     for (let i=0; 0 < cardList.length; i++) {
@@ -97,14 +95,14 @@ function checkCards(cardClicked) {
             cardsToCheck = [];
         }
         else if (cardsToCheck[0].firstElementChild.classList.value != cardsToCheck[1].firstElementChild.classList.value) {
-            // display both un-matched cards for __ seconds
+            // display both un-matched cards for 1.5 seconds
             // without delay, user only sees first card
             setTimeout(function misMatchedCards() {
                 for(const card of cardsToCheck) {
                     toggleCard(card);
                 }
                 cardsToCheck = [];
-            }, 1000);
+            }, 1500);
         }
         updateMoves();
         checkStars();
