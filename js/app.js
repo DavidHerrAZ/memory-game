@@ -20,6 +20,9 @@ const restartButton = document.querySelector('.restart');
 const starRating = document.querySelectorAll('.stars li');
 const moveText = document.querySelector('.moves');
 let userMoves = 0;
+const timerText = document.querySelector('.timer');
+let userTime, rawUserTime, userTimeString, timeCounter;
+
 
 /*
  * Display the cards on the page
@@ -47,7 +50,7 @@ function shuffle(array) {
 function startOrResetGame() {
     initializeMoves();
     initializeStars();
-    // TODO: initializeTimer()
+    initializeTimer();
     initializeDeck();
 }
 
@@ -62,7 +65,12 @@ function initializeStars() {
     }
 }
 
-// TODO: initializeTimer()
+function initializeTimer() {
+    userTime = 0;
+    clearInterval(timeCounter);
+    timerText.textContent = "00:00:00";
+    timeCounter = setInterval(gameTimer,1000);
+}
 
 // Apply order to each card element based off shuffled deck
 function initializeDeck() {
@@ -70,7 +78,7 @@ function initializeDeck() {
 
     for (let i=0; 0 < cardList.length; i++) {
         cardList[i].style.order = cardOrder[i];
-        //When starting|resetting game, all card classes must reset to 'card'
+        // When starting|resetting game, all card classes must be reset to 'card' to re-hide the symbol
         cardList[i].className = "card";
     }
 }
@@ -125,6 +133,17 @@ function updateStars() {
     const currentStars = document.querySelectorAll('.stars li:not([style*="visibility: hidden"])');
     const removeStar = currentStars.length - 1;
     starRating[removeStar].style.visibility = "hidden";
+}
+
+/* 
+*  Timer formatting https://stackoverflow.com/questions/6312993/javascript-seconds-to-time-string-with-format-hhmmss
+*/ 
+function gameTimer() {
+    userTime++;
+    rawUserTime = new Date(null);
+    rawUserTime.setSeconds(userTime);
+    userTimeString = rawUserTime.toISOString().substr(11, 8);
+    timerText.textContent = userTimeString;
 }
 
 /* 
