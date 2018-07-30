@@ -2,8 +2,8 @@
  * Global variables for managing the game board
  * Includes card list and order for shuffling
  */
-const cardDeck = document.querySelector('.deck');
-const cardList = document.querySelectorAll('.card');
+const cardDeck = document.querySelector(".deck");
+const cardList = document.querySelectorAll(".card");
 const cardOrder = Array.from(Array(cardList.length).keys());
 
 /*
@@ -16,13 +16,12 @@ let matchedCards = [];
 /*
  * Global variables for managing the scoreboard
  */
-const restartButton = document.querySelector('.restart');
-const starRating = document.querySelectorAll('.stars li');
-const moveText = document.querySelector('.moves');
+const restartButton = document.querySelector(".restart");
+const starRating = document.querySelectorAll(".stars li");
+const moveText = document.querySelector(".moves");
 let userMoves = 0;
-const timerText = document.querySelector('.timer');
+const timerText = document.querySelector(".timer");
 let userTime, rawUserTime, userTimeString, timeCounter;
-
 
 /*
  * Display the cards on the page
@@ -33,132 +32,150 @@ let userTime, rawUserTime, userTimeString, timeCounter;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+  var currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
 
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
 
-    return array;
+  return array;
 }
 
 // Functions to start and/or restart game scoreboard
 function startOrResetGame() {
-    initializeMoves();
-    initializeStars();
-    initializeTimer();
-    initializeDeck();
+  initializeMoves();
+  initializeStars();
+  initializeTimer();
+  initializeDeck();
 }
 
 function initializeMoves() {
-    userMoves = 0;
-    moveText.textContent = userMoves;
+  userMoves = 0;
+  moveText.textContent = userMoves;
 }
 
 function initializeStars() {
-    for (const star of starRating) {
-        star.style.visibility = "visible";
-    }
+  for (const star of starRating) {
+    star.style.visibility = "visible";
+  }
 }
 
 function initializeTimer() {
-    userTime = 0;
-    clearInterval(timeCounter);
-    timerText.textContent = "00:00:00";
-    timeCounter = setInterval(gameTimer,1000);
+  // Set all timer variables to 0 and clear the set interval function
+  userTime = 0;
+  clearInterval(timeCounter);
+  timerText.textContent = "00:00:00";
+
+  // Reset the timer counter using the set interval function
+  timeCounter = setInterval(gameTimer, 1000);
 }
 
 // Apply order to each card element based off shuffled deck
 function initializeDeck() {
-    shuffle(cardOrder);
+  shuffle(cardOrder);
 
-    for (let i=0; 0 < cardList.length; i++) {
-        cardList[i].style.order = cardOrder[i];
-        // When starting|resetting game, all card classes must be reset to 'card' to re-hide the symbol
-        cardList[i].className = "card";
-    }
+  for (let i = 0; 0 < cardList.length; i++) {
+    cardList[i].style.order = cardOrder[i];
+    // When starting|resetting game, all card classes must be reset to 'card' to re-hide the symbol
+    cardList[i].className = "card";
+  }
 }
 
 // User card interaction functions for toggling and checking matches
 function toggleCard(cardClicked) {
-    // toggling open only shows the other side of the card
-    cardClicked.classList.toggle('open');
-    // toggling show actually shows the symbol
-    cardClicked.classList.toggle('show');
-};
+  // toggling open only shows the other side of the card
+  cardClicked.classList.toggle("open");
+  // toggling show actually shows the symbol
+  cardClicked.classList.toggle("show");
+}
 
 function checkCards(cardClicked) {
-    cardsToCheck.unshift(cardClicked);
+  cardsToCheck.unshift(cardClicked);
 
-    if (cardsToCheck.length === 2) {
-        if (cardsToCheck[0].firstElementChild.classList.value === cardsToCheck[1].firstElementChild.classList.value) {
-            for(const card of cardsToCheck) {
-                card.classList.toggle('match');
-                matchedCards.push(card);
-            }
-            cardsToCheck = [];
-        }
-        else if (cardsToCheck[0].firstElementChild.classList.value != cardsToCheck[1].firstElementChild.classList.value) {
-            // display both un-matched cards for 1.5 seconds
-            // without delay, user only sees first card
-            setTimeout(function misMatchedCards() {
-                for(const card of cardsToCheck) {
-                    toggleCard(card);
-                }
-                cardsToCheck = [];
-            }, 1500);
-        }
-        updateMoves();
-        checkStars();
+  // If the user has clicked two cards
+  if (cardsToCheck.length === 2) {
+    // check first to see if they match. When they do, toggle match and pushed to matched cards array
+    if (
+      cardsToCheck[0].firstElementChild.classList.value ===
+      cardsToCheck[1].firstElementChild.classList.value
+    ) {
+      for (const card of cardsToCheck) {
+        card.classList.toggle("match");
+        matchedCards.push(card);
+      }
+      cardsToCheck = [];
     }
+    // then check to see if they are mismatched. Show cards briefly when not equal.
+    else if (
+      cardsToCheck[0].firstElementChild.classList.value !=
+      cardsToCheck[1].firstElementChild.classList.value
+    ) {
+      // display both un-matched cards for 1.5 seconds
+      // without delay, user only sees first card
+      setTimeout(function misMatchedCards() {
+        for (const card of cardsToCheck) {
+          toggleCard(card);
+        }
+        cardsToCheck = [];
+      }, 1500);
+    }
+    updateMoves();
+    checkStars();
+  }
 }
 
 // Functions for managing scoreboard throughout game
 function updateMoves() {
-    userMoves++;
-    moveText.textContent = userMoves;
+  userMoves++;
+  moveText.textContent = userMoves;
 }
 
 function checkStars() {
-    if (userMoves === 16 || userMoves === 24 || userMoves === 32) {
-        updateStars();
-    }
+  if (userMoves === 16 || userMoves === 24 || userMoves === 32) {
+    updateStars();
+  }
 }
 
 function updateStars() {
-    const currentStars = document.querySelectorAll('.stars li:not([style*="visibility: hidden"])');
-    const removeStar = currentStars.length - 1;
-    starRating[removeStar].style.visibility = "hidden";
+  const currentStars = document.querySelectorAll(
+    '.stars li:not([style*="visibility: hidden"])'
+  );
+  const removeStar = currentStars.length - 1;
+  starRating[removeStar].style.visibility = "hidden";
 }
 
 /* 
 *  Timer formatting https://stackoverflow.com/questions/6312993/javascript-seconds-to-time-string-with-format-hhmmss
-*/ 
+*/
+
 function gameTimer() {
-    userTime++;
-    rawUserTime = new Date(null);
-    rawUserTime.setSeconds(userTime);
-    userTimeString = rawUserTime.toISOString().substr(11, 8);
-    timerText.textContent = userTimeString;
+  userTime++;
+  rawUserTime = new Date(null);
+  rawUserTime.setSeconds(userTime);
+  userTimeString = rawUserTime.toISOString().substr(11, 8);
+  timerText.textContent = userTimeString;
 }
 
 /* 
 *  For efficiency the event listener will be added to '.deck'
 *  Functions for interactions with cards will use click targets
-*/ 
-cardDeck.addEventListener('click', function(clickevent) {
-    const cardClicked = clickevent.target;
-    if (cardClicked.classList.contains('card')) {
-        toggleCard(cardClicked);
-        checkCards(cardClicked);
-    }
+*/
+
+cardDeck.addEventListener("click", function(clickevent) {
+  const cardClicked = clickevent.target;
+  if (cardClicked.classList.contains("card")) {
+    toggleCard(cardClicked);
+    checkCards(cardClicked);
+  }
 });
 
-restartButton.addEventListener('click', startOrResetGame);
+restartButton.addEventListener("click", startOrResetGame);
 
 // Initialize game when the page loads
 startOrResetGame();
