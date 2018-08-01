@@ -83,6 +83,27 @@
         </ul>
     </div>
 
+    <!-- Modal core structure from: https://getbootstrap.com/docs/4.0/components/modal/ -->
+    <div class="modal hide">
+        <div class="modal-background">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Game Won!</h2>
+                    <span class="close">X</span>
+                </div>
+                <div class="modal-body">
+                    <p>Stars = <span class="game-stars"></span></p>
+                    <p>Time  = <span class="game-time"></span></p>
+                    <p>Moves = <span class="game-moves"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn">OK!</button>
+                    <button type="button" class="btn">Play Again!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/app.js"></script>
 </body>
 </html>
