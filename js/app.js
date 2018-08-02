@@ -139,7 +139,7 @@ function checkCards(cardClicked) {
           toggleCard(card);
         }
         cardsToCheck = [];
-      }, 1500);
+      }, 750);
     }
     updateMoves();
     checkStars();
