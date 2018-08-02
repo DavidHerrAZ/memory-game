@@ -17,11 +17,21 @@ let matchedCards = [];
  * Global variables for managing the scoreboard
  */
 const restartButton = document.querySelector(".restart");
+
 const starRating = document.querySelectorAll(".stars li");
+let userStars;
+
 const moveText = document.querySelector(".moves");
 let userMoves = 0;
+
 const timerText = document.querySelector(".timer");
 let userTime, rawUserTime, userTimeString, timeCounter;
+
+/*
+ * Global variables for managing game win modal
+ */
+const hideModal = document.querySelector(".hide")
+const gameModal = document.querySelector(".modal")
 
 /*
  * Display the cards on the page
@@ -79,6 +89,8 @@ function initializeTimer() {
 // Apply order to each card element based off shuffled deck
 function initializeDeck() {
   shuffle(cardOrder);
+  cardsToCheck = [];
+  matchedCards = [];
 
   for (let i = 0; 0 < cardList.length; i++) {
     cardList[i].style.order = cardOrder[i];
@@ -137,17 +149,30 @@ function updateMoves() {
 }
 
 function checkStars() {
-  if (userMoves === 16 || userMoves === 24 || userMoves === 32) {
+  countStars();
+  if (userMoves === 3 || userMoves === 6 || userMoves === 12) {
     updateStars();
   }
 }
 
+function countStars() {
+  return userStars = document.querySelectorAll('.stars li:not([style*="visibility: hidden"])').length;
+}
+
 function updateStars() {
-  const currentStars = document.querySelectorAll(
-    '.stars li:not([style*="visibility: hidden"])'
-  );
-  const removeStar = currentStars.length - 1;
+  const removeStar = userStars - 1;
   starRating[removeStar].style.visibility = "hidden";
+}
+
+// Functions for winning game and managing modal
+function checkGame() {
+  if (matchedCards.length === 4) {
+    toggleModal();
+  }
+}
+
+function toggleModal() {
+  hideModal.classList.toggle("hide")
 }
 
 /* 
@@ -172,10 +197,22 @@ cardDeck.addEventListener("click", function(clickevent) {
   if (cardClicked.classList.contains("card")) {
     toggleCard(cardClicked);
     checkCards(cardClicked);
+    checkGame();
   }
 });
 
 restartButton.addEventListener("click", startOrResetGame);
+
+gameModal.addEventListener("click", function(modalevent) {
+  const modalClick = modalevent.target;
+  if (modalClick.classList.contains("modal-close")) {
+    toggleModal();
+  }
+  else if (modalClick.classList.contains("modal-replay")) {
+    toggleModal();
+    startOrResetGame();
+  }
+});
 
 // Initialize game when the page loads
 startOrResetGame();
