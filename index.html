@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>Matching Game</title>
@@ -8,6 +9,7 @@
     <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
     <link rel="stylesheet" href="css/app.css">
 </head>
+
 <body>
 
     <div class="container">
@@ -16,19 +18,25 @@
         </header>
 
         <section class="score-panel">
-        	<ul class="stars">
-        		<li><i class="fa fa-star"></i></li>
-        		<li><i class="fa fa-star"></i></li>
-        		<li><i class="fa fa-star"></i></li>
-        	</ul>
+            <ul class="stars">
+                <li>
+                    <i class="fa fa-star"></i>
+                </li>
+                <li>
+                    <i class="fa fa-star"></i>
+                </li>
+                <li>
+                    <i class="fa fa-star"></i>
+                </li>
+            </ul>
 
             <span class="moves">0</span> Moves
-            
+
             <span class="timer">00:00:00</span>
 
             <div class="restart">
-        		<i class="fa fa-repeat"></i>
-        	</div>
+                <i class="fa fa-repeat"></i>
+            </div>
         </section>
 
         <ul class="deck">
@@ -89,16 +97,22 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 class="modal-title">Game Won!</h2>
-                    <span class="close">X</span>
+                    <span class="modal-close">X</span>
                 </div>
                 <div class="modal-body">
-                    <p>Stars = <span class="game-stars"></span></p>
-                    <p>Time  = <span class="game-time"></span></p>
-                    <p>Moves = <span class="game-moves"></span></p>
+                    <p>Stars =
+                        <span class="game-stars"></span>
+                    </p>
+                    <p>Time =
+                        <span class="game-time"></span>
+                    </p>
+                    <p>Moves =
+                        <span class="game-moves"></span>
+                    </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn">OK!</button>
-                    <button type="button" class="btn">Play Again!</button>
+                    <button type="button" class="btn modal-close">OK!</button>
+                    <button type="button" class="btn modal-replay">Play Again!</button>
                 </div>
             </div>
         </div>
@@ -106,4 +120,5 @@
 
     <script src="js/app.js"></script>
 </body>
+
 </html>
