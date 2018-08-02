@@ -30,8 +30,12 @@ let userTime, rawUserTime, userTimeString, timeCounter;
 /*
  * Global variables for managing game win modal
  */
-const hideModal = document.querySelector(".hide")
-const gameModal = document.querySelector(".modal")
+const hideModal = document.querySelector(".hide");
+const gameModal = document.querySelector(".modal");
+
+const gameStars = document.querySelector(".game-stars");
+const gameTime = document.querySelector(".game-time");
+const gameMoves = document.querySelector(".game-moves");
 
 /*
  * Display the cards on the page
@@ -78,8 +82,8 @@ function initializeStars() {
 
 function initializeTimer() {
   // Set all timer variables to 0 and clear the set interval function
+  stopTimer();
   userTime = 0;
-  clearInterval(timeCounter);
   timerText.textContent = "00:00:00";
 
   // Reset the timer counter using the set interval function
@@ -150,13 +154,15 @@ function updateMoves() {
 
 function checkStars() {
   countStars();
-  if (userMoves === 3 || userMoves === 6 || userMoves === 12) {
+  if (userMoves === 16 || userMoves === 24 || userMoves === 32) {
     updateStars();
   }
 }
 
 function countStars() {
-  return userStars = document.querySelectorAll('.stars li:not([style*="visibility: hidden"])').length;
+  return (userStars = document.querySelectorAll(
+    '.stars li:not([style*="visibility: hidden"])'
+  ).length);
 }
 
 function updateStars() {
@@ -166,13 +172,24 @@ function updateStars() {
 
 // Functions for winning game and managing modal
 function checkGame() {
-  if (matchedCards.length === 4) {
+  if (matchedCards.length === 2) {
+    modalStats();
     toggleModal();
   }
 }
 
 function toggleModal() {
-  hideModal.classList.toggle("hide")
+  hideModal.classList.toggle("hide");
+}
+
+function modalStats() {
+  gameStars.textContent = userStars;
+  gameMoves.textContent = userMoves;
+  gameTime.textContent = userTimeString;
+}
+
+function stopTimer() {
+  clearInterval(timeCounter);
 }
 
 /* 
@@ -207,8 +224,8 @@ gameModal.addEventListener("click", function(modalevent) {
   const modalClick = modalevent.target;
   if (modalClick.classList.contains("modal-close")) {
     toggleModal();
-  }
-  else if (modalClick.classList.contains("modal-replay")) {
+    stopTimer();
+  } else if (modalClick.classList.contains("modal-replay")) {
     toggleModal();
     startOrResetGame();
   }
