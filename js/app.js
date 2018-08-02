@@ -172,7 +172,7 @@ function updateStars() {
 
 // Functions for winning game and managing modal
 function checkGame() {
-  if (matchedCards.length === 2) {
+  if (matchedCards.length === 16) {
     modalStats();
     toggleModal();
   }
