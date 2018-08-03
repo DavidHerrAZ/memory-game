@@ -1,8 +1,12 @@
+"use strict";
+
 /*
  * Global variables for managing the game board
  * Includes card list and order for shuffling
  */
 const cardDeck = document.querySelector(".deck");
+let currentIndex, temporaryValue, randomIndex;
+
 const cardList = document.querySelectorAll(".card");
 const cardOrder = Array.from(Array(cardList.length).keys());
 
@@ -22,6 +26,7 @@ const starRating = document.querySelectorAll(".stars li");
 let userStars;
 
 const moveText = document.querySelector(".moves");
+let rawMoves = 0;
 let userMoves = 0;
 
 const timerText = document.querySelector(".timer");
@@ -46,9 +51,7 @@ const gameMoves = document.querySelector(".game-moves");
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-  var currentIndex = array.length,
-    temporaryValue,
-    randomIndex;
+  currentIndex = array.length;
 
   while (currentIndex !== 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);
@@ -65,11 +68,11 @@ function shuffle(array) {
 function startOrResetGame() {
   initializeMoves();
   initializeStars();
-  initializeTimer();
   initializeDeck();
 }
 
 function initializeMoves() {
+  rawMoves = 0;
   userMoves = 0;
   moveText.textContent = userMoves;
 }
@@ -213,9 +216,13 @@ function gameTimer() {
 cardDeck.addEventListener("click", function(clickevent) {
   const cardClicked = clickevent.target;
   if (cardClicked.classList.contains("card")) {
+    if (rawMoves === 0) {
+      initializeTimer();
+    }
     toggleCard(cardClicked);
     checkCards(cardClicked);
     checkGame();
+    rawMoves++
   }
 });
 
