@@ -173,6 +173,7 @@ function updateStars() {
 // Functions for winning game and managing modal
 function checkGame() {
   if (matchedCards.length === 16) {
+    stopTimer();
     modalStats();
     toggleModal();
   }
@@ -224,7 +225,6 @@ gameModal.addEventListener("click", function(modalevent) {
   const modalClick = modalevent.target;
   if (modalClick.classList.contains("modal-close")) {
     toggleModal();
-    stopTimer();
   } else if (modalClick.classList.contains("modal-replay")) {
     toggleModal();
     startOrResetGame();
