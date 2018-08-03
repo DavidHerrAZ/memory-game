@@ -68,6 +68,8 @@ function shuffle(array) {
 function startOrResetGame() {
   initializeMoves();
   initializeStars();
+  stopTimer();
+  clearTimer();
   initializeDeck();
 }
 
@@ -86,8 +88,7 @@ function initializeStars() {
 function initializeTimer() {
   // Set all timer variables to 0 and clear the set interval function
   stopTimer();
-  userTime = 0;
-  timerText.textContent = "00:00:00";
+  clearTimer();
 
   // Reset the timer counter using the set interval function
   timeCounter = setInterval(gameTimer, 1000);
@@ -194,6 +195,11 @@ function modalStats() {
 
 function stopTimer() {
   clearInterval(timeCounter);
+}
+
+function clearTimer() {
+  userTime = 0;
+  timerText.textContent = "00:00:00";
 }
 
 /* 
