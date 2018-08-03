@@ -154,7 +154,7 @@ function updateMoves() {
 
 function checkStars() {
   countStars();
-  if (userMoves === 16 || userMoves === 24 || userMoves === 32) {
+  if (userMoves === 16 || userMoves === 24) {
     updateStars();
   }
 }
