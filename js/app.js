@@ -205,13 +205,24 @@ function clearTimer() {
 /* 
 *  Timer formatting https://stackoverflow.com/questions/6312993/javascript-seconds-to-time-string-with-format-hhmmss
 */
-
 function gameTimer() {
   userTime++;
   rawUserTime = new Date(null);
   rawUserTime.setSeconds(userTime);
   userTimeString = rawUserTime.toISOString().substr(11, 8);
   timerText.textContent = userTimeString;
+}
+
+/* 
+* Checking for valid click to address code review.
+* inspired by: https://matthewcranford.com/memory-game-walkthrough-part-3-matching-pairs/
+*/
+function validClick(cardClicked) {
+  return (
+      cardsToCheck.length < 2 &&
+      !cardsToCheck.includes(cardClicked) &&
+      !matchedCards.includes(cardClicked)
+  );
 }
 
 /* 
@@ -225,10 +236,14 @@ cardDeck.addEventListener("click", function(clickevent) {
     if (rawMoves === 0) {
       initializeTimer();
     }
-    toggleCard(cardClicked);
-    checkCards(cardClicked);
-    checkGame();
+    
     rawMoves++
+ 
+    if (validClick(cardClicked)) {
+      toggleCard(cardClicked);  
+      checkCards(cardClicked);
+      checkGame();
+    }
   }
 });
 
